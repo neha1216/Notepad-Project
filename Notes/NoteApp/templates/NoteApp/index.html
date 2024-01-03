@@ -1,0 +1,93 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>My Notes</title>
+</head>
+
+<body>
+    <heading><h3>My Notes APP</h3></heading>
+
+    <div style="margin: 2%;">
+        <a href="create_page">
+            <button style="float:right;" > Create New Note </button>
+        </a>
+    </div>
+
+    {% for note in notes %}
+        <div id="id___{{note.id}}">{{ note.id }}</div>
+        <br>
+        <div id="username___{{note.id}}">ID: {{ note.username }}</div>
+        <br>
+        <div id="Note_title___{{note.id}}">Note Title:  {{ note.Note_title }}</div>
+        <br>
+        <div id="notes_content___{{note.id}}">Notes Content:  {{ note.notes_content }}</div>
+        <br>
+        <div id="created_on___{{note.id}}">Created on: {{ note.created_on }}</div>
+        <br>
+        <div id="updated_on___{{note.id}}">Updated on; {{ note.updated_on }}</div>
+        <br>
+        <!-- <button class='w3-btn w3-ripple w3-black' id="edit_button___{{note.id}}">Edit</button>
+        <button class='w3-btn w3-ripple w3-black' id="edit_button___{{note.id}}">Delete</button> -->       
+        <!-- <br> -->
+
+        <a href="edit_page?note_id={{note.id}}" style="margin-right: 1%;">
+            <button>Edit</button>
+        </a>
+    
+
+        <button class='w3-btn w3-ripple w3-black' id="note_{{note.id}}" onclick="deleteNote(this.id)">Delete</button>
+        
+        
+    {% endfor %}
+
+
+</body>
+</html>
+<script>
+
+var elements = document.getElementsByClassName("edit");
+
+for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', myFunction);
+}
+
+function myFunction() {
+  notes_pkey_id = this.id.split('___')[1]
+  notes_content = document.getElementById('notes_content___'+notes_pkey_id).innerHTML
+  console.log(notes_content)
+}
+
+function editNote(id) {
+        splitted_text = id.split('_')
+        note_id = splitted_text[1]
+        $.ajax({
+                url:'/notes/edit_page',
+                type: "GET",
+                data: {
+                    note_id: note_id
+                }
+            });
+    }
+
+
+function deleteNote(id) {
+        splitted_text = id.split('_')
+        note_id = splitted_text[1]
+        $.ajax({
+                url:'/notes/delete_note',
+                type: "GET",
+                data: { 
+                    note_id: note_id
+                },
+                success: reload_page
+            });
+    }
+    
+function reload_page(){
+    location.reload()
+}
+
+</script>
+
+
+

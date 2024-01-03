@@ -1,0 +1,47 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>My Notes</title>
+</head>
+<body>
+    <a href="/notes/view"><heading>Home</heading></a>
+    <hr>
+    <heading style="float:right"> Welcome {{logged_in_user}}</heading>
+    <heading>Edit Note</heading>
+    <br>
+    <br>
+    <br>
+    
+    <textarea id="Note-box" rows="2" cols="20">{{present_title}}</textarea><br><br>
+    <textarea id="edit-box" rows="4" cols="50">{{present_content}}</textarea><br>
+    <button type="submit" style="margin-top:1%" onclick="editNote()">Submit Edited Note</button>
+
+
+</body>
+</html>
+
+<script>
+function editNote() {
+    if ((document.getElementById('edit-box').value=='') || (document.getElementById('Note-box').value=='')){
+            alert("Please write something in notes")
+    }
+    else{
+        $.ajax({
+                url:'/notes/edit',
+                type: "GET",
+                data: {
+                    edited_note: document.getElementById('edit-box').value,
+                    Note_title: document.getElementById('Note-box').value,
+                    note_id: "{{note_id}}"
+                },
+                success: redirect_to_homepage
+            });
+    }
+            
+        }
+
+function redirect_to_homepage(){
+    window.location.href = "/notes/view";
+
+}
+</script>
