@@ -1,29 +1,37 @@
+
 <!DOCTYPE html>
-<html>
+
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>My Notes</title>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <title>My Notes</title>
+
+
 </head>
 <br>
-    <a href="/notes/view"><heading>Home</heading></a>
+    <a href="/home"><heading>Home</heading></a>
+    
+
+
     <hr>
-    <heading style="float:right"> Welcome {{logged_in_user}}</heading>
-    <heading>Create Note</heading>
-    <br>
-    <br>
-    <br>
-    <br>
+    <center>
 
-    <textarea id="Note-box" rows="2" cols="20" placeholder="Note Title"></textarea><br><br>
-    <textarea id="create-box" rows="4" cols="50" placeholder="Write your note here"></textarea><br>
-    <button type="submit" style="margin-top:1%" onclick="createNote()">Create Note</button>
+    <h2 style="float:center"> Welcome {{user.get_username}}</h2>
+    <br>
+    <!-- <h4>Create New Note</h4> -->
+    <br>
+    
 
-
+    <textarea id="Note-box" rows="3" cols="30" placeholder="Note Title"></textarea><br><br>
+    <textarea id="create-box" rows="5" cols="50" placeholder="Write your note here"></textarea><br>
+    <button type="submit" style="margin-top:2%" onclick="createNote()">Create Note</button>
+    </center>
 
 </body>
 </html>
 
 <script>
+
 
 function createNote() {
     if (document.getElementById('create-box').value==''|| document.getElementById('Note-box').value==''){
@@ -44,7 +52,7 @@ function createNote() {
         }
 
         function redirect_to_homepage(){
-    window.location.href = "/notes/view";
+    window.location.href = "/home";
 
 }
 

@@ -1,0 +1,31 @@
+{% extends 'NoteApp/base.html' %}
+<!-- {%  block title %} Sign in {% endblock %} -->
+
+
+<!-- <title>Sign Up</title> -->
+{% block content %}
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+            class="img-fluid" alt="Sample image">
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+
+
+
+    <div class='row'>
+        <div>
+            <button class ='logbutton' >
+                <a href = "{% url 'social:begin'  'google-oauth2' %}" > Login with Google </a>
+            </button>
+                
+        </div>
+    </div>
+
+{% endblock %}
+
+
+<!-- class ='col-md-8 mx-auto social-container my-2 order-md-1' -->
+<!-- style="padding-left: 2.5rem; padding-right: 2.5rem;"  -->

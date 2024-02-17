@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gfrn0%#7io*u+(5mpolpt4uri#^sa0g22nri54l^lt#rnw5m%u'
+SECRET_KEY = '##########'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'NoteApp',
+    'social_django', #add this
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware', #add this
 ]
 
 ROOT_URLCONF = 'Notes.urls'
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'Notes.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,10 +65,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends', #add this
+
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'Notes.wsgi.application'
 
@@ -78,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'note_db',
-        'USER': 'root',
-        'PASSWORD': 'Neha12345@@',
+        'USER': '############',
+        'PASSWORD': '##########',
         'HOST':'localhost',
         'PORT':'3306',
     }
@@ -125,3 +130,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#social app custom settings
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/home'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = "login"
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '#############################################'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET =  '#################################'
+

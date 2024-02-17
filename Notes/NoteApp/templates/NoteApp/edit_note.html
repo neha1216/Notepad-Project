@@ -4,14 +4,14 @@
     <title>My Notes</title>
 </head>
 <body>
-    <a href="/notes/view"><heading>Home</heading></a>
+    <a href="/home"><heading>Home</heading></a>
     <hr>
-    <heading style="float:right"> Welcome {{logged_in_user}}</heading>
+    <heading style="float:right"> Welcome {{user.get_username}}</heading>
     <heading>Edit Note</heading>
     <br>
     <br>
     <br>
-    
+
     <textarea id="Note-box" rows="2" cols="20">{{present_title}}</textarea><br><br>
     <textarea id="edit-box" rows="4" cols="50">{{present_content}}</textarea><br>
     <button type="submit" style="margin-top:1%" onclick="editNote()">Submit Edited Note</button>
@@ -41,7 +41,7 @@ function editNote() {
         }
 
 function redirect_to_homepage(){
-    window.location.href = "/notes/view";
+    window.location.href = "/home";
 
 }
 </script>

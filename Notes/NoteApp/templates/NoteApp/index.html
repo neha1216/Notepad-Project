@@ -1,49 +1,168 @@
+{% load static %}
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    
     <title>My Notes</title>
+    <link rel="stylesheet" href="{% static 'ind.css' %}">
+    
+    <!-- Importing icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            .content-btn{
+                margin-top: 10px;
+            }
+
+            .delete-btn{
+                color: rgba(187, 18, 18, 0.884);
+            }
+        </style>
+    
 </head>
 
 <body>
-    <heading><h3>My Notes APP</h3></heading>
+    <ul id="dropdown1" class="dropdown-content">
+            <li><a href="#!">{{user.get_username}}</a></li>
+            <li class="divider"></li>
+            <li><a href="/logout">Logout</a></li>
+    </ul>
+    <nav>
+        <div class="nav-wrapper container">
+          <a href="#" class="brand-logo left" style="position: static;">Logo</a>
+          <ul class="right" style="height:inherit;">
 
-    <div style="margin: 2%;">
-        <a href="create_page">
-            <button style="float:right;" > Create New Note </button>
-        </a>
+             <!-- let's create a button for creating new notes -->
+            <li><a  class= "waves-effect waves-light btn" onclick="modelCreateOpenFunc()"> Create New Note </a></li> 
+             <!-- Dropdown menu for each note -->
+            <li><a class="dropdown-button" href="#!" data-activates="dropdown1"  data-beloworigin="true">
+                <img style="height:100%; padding:8px 0" class="circle" src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg">
+                <i class="material-icons left"></i>
+                </a>
+            </li>
+          </ul>
+        </div>     
+    </nav>
+
+    <!-- Modal Trigger -->
+    <!-- Modal Structure (EDIT)-->
+    <div id="modaledit" class="modal">
+        <div class="modal-content">
+        <!-- <h4>Edit Note</h4> -->
+        <!-- <heading style="float:right"> Welcome {{user.get_username}}</heading>    -->
+        <h4 style="float:left">Edit Note</h4>
+
+
+
+        <div class="row">
+            <div class="input-field col s12">
+              <textarea id="Note-box" type="text" class="materialize-textarea"></textarea>
+              <label class="active" for="Note-box"></label>
+            </div>
+
+            <div class="row">
+            <div class="input-field col s12">
+                <textarea id="edit-box" class="materialize-textarea"></textarea>
+                <label for="edit-box"></label>
+            </div>
+            </div>
+        </div>
+                
+        </div>
+        <div class="modal-footer">
+        <a  type="submit" class="modal-close waves-effect waves-green btn-flat submit-edited-note" onclick="editNote()">Submit Edited Note</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        </div>
     </div>
 
-    {% for note in notes %}
-        <div id="id___{{note.id}}">{{ note.id }}</div>
-        <br>
-        <div id="username___{{note.id}}">ID: {{ note.username }}</div>
-        <br>
-        <div id="Note_title___{{note.id}}">Note Title:  {{ note.Note_title }}</div>
-        <br>
-        <div id="notes_content___{{note.id}}">Notes Content:  {{ note.notes_content }}</div>
-        <br>
-        <div id="created_on___{{note.id}}">Created on: {{ note.created_on }}</div>
-        <br>
-        <div id="updated_on___{{note.id}}">Updated on; {{ note.updated_on }}</div>
-        <br>
-        <!-- <button class='w3-btn w3-ripple w3-black' id="edit_button___{{note.id}}">Edit</button>
-        <button class='w3-btn w3-ripple w3-black' id="edit_button___{{note.id}}">Delete</button> -->       
-        <!-- <br> -->
 
-        <a href="edit_page?note_id={{note.id}}" style="margin-right: 1%;">
-            <button>Edit</button>
-        </a>
-    
 
-        <button class='w3-btn w3-ripple w3-black' id="note_{{note.id}}" onclick="deleteNote(this.id)">Delete</button>
+<!-- Modal Trigger  (CREATE)-->
+    <!-- Modal Structure -->
+    <div id="modalcreate" class="modal">
+        <div class="modal-content">
         
+        <!-- <heading style="float:right"> Welcome {{user.get_username}}</heading>    -->
+        <h4 style="float:left">Create New Note</h4>
+
+
+
+        <div class="row">
+            <div class="input-field col s12">
+              <input id="create_note_title" type="text">
+              <label class="active" for="create_note_title">Note's Title</label>
+            </div>
+
+            <div class="row">
+            <div class="input-field col s12">
+                <textarea id="create_note_content" class="materialize-textarea"></textarea>
+                <label for="create_note_content">Note's content</label>
+            </div>
+            </div>
+        </div>
+                
+        </div>
+        <div class="modal-footer">
+        <a href="#!" type="submit" class="modal-close waves-effect waves-green btn-flat" onclick="createNote()">Create Note</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- COLLAPSIBLE -->
+    <section class="container">
+        <h4 class="heading"><span>{{user.first_name}}'s Notes</span></h4>
+        <ul class = "collapsible" data-collapsible = "accordion" id="collapsible-block">
+            
+    {% for note in notes %}
+    <li>
+        <div class = "collapsible-header" id="note_title_{{note.id}}">
+            {{ note.Note_title }}
+        </div>
+
+
+        <!-- <a href="notes/edit_page?note_id={{note.id}}"><i class="material-icons edit-btn">edit</i></a> -->
+
+
+        <!-- Code for edit and delete button/icon -->
+        <div class = "collapsible-body">
+            <div class="right content-btn">
+                <i class="material-icons edit-btn"  id= "edit_note_{{note.id}}" onclick="modelOpenFunc(this.id)">edit</i> 
+                <i class="material-icons delete-btn" class='deletebutton' id="note_{{note.id}}" onclick="deleteNote(this.id)">delete</i>
+        </div>
+         <!-- It shows note's content  -->
+        <p id="note_content_{{note.id}}">{{ note.notes_content }}</p>
+        </div>
+    </li>
         
     {% endfor %}
+        </ul>
+    </section>
 
 
 </body>
+
 </html>
+
+   
+
+
 <script>
+
 
 var elements = document.getElementsByClassName("edit");
 
@@ -51,24 +170,27 @@ for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener('click', myFunction);
 }
 
+// AJAX,, Code to call function by clicking on edit icon
 function myFunction() {
   notes_pkey_id = this.id.split('___')[1]
   notes_content = document.getElementById('notes_content___'+notes_pkey_id).innerHTML
   console.log(notes_content)
 }
 
-function editNote(id) {
-        splitted_text = id.split('_')
-        note_id = splitted_text[1]
-        $.ajax({
-                url:'/notes/edit_page',
-                type: "GET",
-                data: {
-                    note_id: note_id
-                }
-            });
-    }
+// function editNote(id) {
+//         splitted_text = id.split('_')
+//         note_id = splitted_text[1]
+//         $.ajax({
+//                 url:'/notes/edit_page',
+//                 type: "GET",
+//                 data: {
+//                     note_id: note_id
+//                 }
+//             });
+//     }
 
+
+// AJAX ,,Function to call by clicking on Delete Icon
 
 function deleteNote(id) {
         splitted_text = id.split('_')
@@ -76,7 +198,7 @@ function deleteNote(id) {
         $.ajax({
                 url:'/notes/delete_note',
                 type: "GET",
-                data: { 
+                data: {
                     note_id: note_id
                 },
                 success: reload_page
@@ -87,7 +209,105 @@ function reload_page(){
     location.reload()
 }
 
+
+
+// <!-- COLLAPSIBLE END -->
+// End function for modal trigger
+
+function modelOpenFunc(id)
+{       
+        db_id = id.split('edit_note_')[1]  //id = edit_note_55
+        document.getElementsByClassName('submit-edited-note').id='submit_edited_note_' + db_id
+        // submit_button_tag='submit_edited_note' + db_id
+
+        $('#modaledit').modal().modal('open');
+        
+        title_box_id = 'note_title_' + db_id
+        content_box_id = 'note_content_' + db_id
+        current_title = document.getElementById(title_box_id).innerHTML.trim()
+        current_content = document.getElementById(content_box_id).innerHTML.trim()
+
+        document.getElementById('Note-box').value= current_title;
+        document.getElementById('edit-box').value= current_content;
+
+}
+
+
+
+function modelCreateOpenFunc(){
+        $('#modalcreate').modal().modal('open');
+}
+
+
+
+
+function createNote() {
+    if (document.getElementById('create_note_content').value==''|| document.getElementById('create_note_title').value==''){
+            alert("Please write something in notes")
+    }
+    else{
+        $.ajax({
+                url:'/notes/create',
+                type: "GET",
+                data: {
+                    new_note: document.getElementById('create_note_content').value, 
+                    new_title: document.getElementById('create_note_title').value, 
+                },
+                success: redirect_to_homepage
+            });
+    }
+            
+        }
+
+        function redirect_to_homepage(){
+    window.location.href = "/home";
+
+}
+
+
+
+
+
+
+function editNote() {
+        
+    if ((document.getElementById('edit-box').value=='') || (document.getElementById('Note-box').value=='')){
+            alert("Please write something in notes")
+    }
+    else{
+        id = document.getElementsByClassName('submit-edited-note').id
+        alert(document.getElementById('edit-box').value)
+        // document.getElementsByClassName('submit-edited-note').id
+        $.ajax({
+
+                url:'/notes/edit',
+                type: "GET",
+                data: {
+                    edited_note: document.getElementById('edit-box').value,
+                    Note_title: document.getElementById('Note-box').value,
+                    note_id: id.split('submit_edited_note_')[1]
+                },
+                success: redirect_to_homepage
+            });
+    }
+            
+        }
+
+function redirect_to_homepage(){
+    window.location.href = "/home";
+
+}
+
+
+
+
+
+
+
+
 </script>
 
 
 
+
+</html>
